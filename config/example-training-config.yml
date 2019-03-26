@@ -1,0 +1,52 @@
+model:
+  name: example-model
+  author: Chloe Mawer
+  version: AA1
+  description: Predicts a random result given some arbitrary data inputs as an example of this config file
+  tags:
+    - classifier
+    - housing
+  dependencies: requirements.txt
+load_data:
+  how: csv
+  csv:
+    path: data/sample/boston_house_prices.csv
+    usecols: [CRIM, ZN, INDUS, CHAS, NOX, RM, AGE, DIS, RAD, TAX, PTRATIO, B, LSTAT]
+generate_features:
+  make_categorical:
+    columns: RAD
+    RAD:
+      categories: [1, 2, 3, 5, 4, 8, 6, 7, 24]
+      one_hot_encode: True
+  bin_values:
+    columns: CRIM
+    quartiles: 2
+  save_dataset: test/test/boston_house_prices_processed.csv
+train_model:
+  method: xgboost
+  choose_features:
+    features_to_use: [ZN, INDUS, CHAS, NOX, RM, AGE, DIS, RAD, TAX, PTRATIO]
+  get_target:
+    target: CRIM
+  split_data:
+    train_size: 0.5
+    test_size: 0.25
+    validate_size: 0.25
+    random_state: 24
+    save_split_prefix: test/test/example-boston
+  params:
+    max_depth: 100
+    learning_rate: 50
+    random_state: 1019
+  fit:
+    eval_metric: auc
+    verbose: True
+  save_tmo: models/example-boston-crime-prediction.pkl
+score_model:
+  path_to_tmo: models/example-boston-crime-prediction.pkl
+  predict:
+    ntree_limit: 0
+  save_scores: test/true/example-boston-test-scores.csv
+evaluate_model:
+  metrics: [auc, accuracy, logloss]
+

@@ -1,0 +1,17 @@
+generate_features:
+  command: python run.py generate_features --config=config/example-training-config.yml
+  true_dir: test/true/
+  test_dir: test/test/
+  files_to_compare:
+    - boston_house_prices_processed.csv
+train_model:
+  command:  python run.py train_model --config=config/example-training-config.yml --csv=test/test/boston_house_prices_processed.csv
+  true_dir: test/true/
+  test_dir: test/test/
+  files_to_compare:
+    - example-boston-train-features.csv
+    - example-boston-train-targets.csv
+    - example-boston-test-features.csv
+    - example-boston-test-targets.csv
+    - example-boston-validate-features.csv
+    - example-boston-validate-targets.csv
