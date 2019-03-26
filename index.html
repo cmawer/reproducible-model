@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>stitchfix-reproducibility</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://revealjs.com/css/reveal.css">
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://revealjs.com/css/theme/black.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'https://revealjs.com/css/print/pdf.css' : 'https://revealjs.com/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://revealjs.com/lib/js/html5shiv.js"></script>
+  <![endif]-->
+  
+   <style type="text/css">
+   /**
+   * A simple theme for reveal.js presentations, similar
+   * to the default theme. The accent color is darkblue.
+   *
+   * This theme is Copyright (C) 2012 Owen Versteeg, https://github.com/StereotypicalApps. It is MIT licensed.
+   * reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+   * It has been edited by Chloe Mawer.
+   */
+  @import url(https://fonts.googleapis.com/css?family=News+Cycle:400,700);
+  @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
+  section.has-dark-background, section.has-dark-background h1, section.has-dark-background h2, section.has-dark-background h3, section.has-dark-background h4, section.has-dark-background h5, section.has-dark-background h6 {
+    color: #fff; }
+  
+  /*********************************************
+   * GLOBAL STYLES
+   *********************************************/
+  body {
+    background: #fff;
+    background-color: #fff; 
+    }
+  
+  .reveal {
+    font-family: "Lato", sans-serif;
+    font-size: 24px;
+    font-weight: normal;
+    color: #000; }
+  
+  ::selection {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.99);
+    text-shadow: none; }
+  
+  ::-moz-selection {
+    color: #fff;
+    background: #d33682;
+    text-shadow: none; }
+  
+  .reveal .slides > section,
+  .reveal .slides > section > section {
+    line-height: 1.3;
+    font-weight: inherit; }
+  
+  /*********************************************
+   * HEADERS
+   *********************************************/
+  .reveal h1,
+  .reveal h2,
+  .reveal h3,
+  .reveal h4,
+  .reveal h5,
+  .reveal h6 {
+    margin: 0 0 20px 0;
+    color: #515254;
+    font-family: "Lato", sans-serif;
+    font-weight: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    /*text-transform: none;*/
+    text-shadow: none;
+    word-wrap: break-word; }
+  
+  .reveal h1 {
+    font-size: 3.77em; }
+  
+  .reveal h2 {
+    font-size: 2.11em; }
+  
+  .reveal h3 {
+    font-size: 1.25em; 
+    text-align: center; }
+  
+  .reveal h4 {
+    font-size: 1em; }
+  
+  .reveal h1 {
+    text-shadow: none; }
+  
+  /*********************************************
+   * OTHER
+   *********************************************/
+  .reveal p {
+    margin: 20px 0;
+    line-height: 1.3; 
+    text-align: center;}
+  
+  .reveal p img {
+    margin: 0px 0;
+    line-height: 1.3; 
+    text-align: center !important; }
+  
+  /* Ensure certain elements are never larger than the slide itself */
+  .reveal img,
+  .reveal video,
+  .reveal iframe {
+    max-width: 95%;
+    max-height: 95%;
+    text-align: center !important; 
+    }
+  
+  .reveal strong,
+  .reveal b {
+    font-weight: bold; }
+  
+  .reveal em {
+    font-style: italic; }
+  
+  .reveal ol,
+  .reveal dl,
+  .reveal ul {
+    display: inline-block;
+    text-align: left;
+    margin: 0 0 0 1em; }
+  
+  .reveal ol {
+    list-style-type: decimal; }
+  
+  .reveal ul {
+    list-style-type: disc; 
+    padding-inline-start: 0px;
+    text-align: left;
+  }
+  
+  .reveal ul ul {
+    list-style-type: square; }
+  
+  .reveal ul ul ul {
+    list-style-type: circle; }
+  
+  .reveal ul ul,
+  .reveal ul ol,
+  .reveal ol ol,
+  .reveal ol ul {
+    display: block;
+    margin-left: 0px; }
+  
+  .reveal dt {
+    font-weight: bold; }
+  
+  .reveal dd {
+    margin-left: 40px; }
+  
+  .reveal blockquote {
+    display: block;
+    position: relative;
+    width: 70%;
+    margin: 20px auto;
+    padding: 5px;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2); }
+  
+  .reveal blockquote p:first-child,
+  .reveal blockquote p:last-child {
+    display: inline-block; }
+  
+  .reveal q {
+    font-style: italic; }
+  
+  .reveal pre {
+    display: block;
+    position: relative;
+    width: 100%;
+    margin: 0px auto;
+    text-align: left;
+    font-size: 0.55em;
+    font-family: monospace;
+    background: #f7f7f7;
+    line-height: 1.2em;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3); }
+  
+  .reveal code {
+    font-family: monospace;
+    text-transform: none; 
+  }
+  
+  .reveal pre code {
+    display: block;
+    padding: 5px;
+    overflow: auto;
+    max-height: 400px;
+    word-wrap: normal; }
+  
+  .reveal table {
+    margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0; }
+  
+  .reveal table th {
+    font-weight: bold; 
+    }
+  
+  .reveal table th,
+  .reveal table td {
+    text-align: left;
+    padding: 0.2em 0.5em 0.2em 0.5em;
+    border-bottom: 1px solid; 
+    font-size: 18px;}
+  
+  .reveal table th[align="center"],
+  .reveal table td[align="center"] {
+    text-align: center; 
+  }
+  
+  .reveal table th[align="right"],
+  .reveal table td[align="right"] {
+    text-align: right; 
+  }
+  
+  .reveal table tbody tr:last-child th,
+  .reveal table tbody tr:last-child td {
+    border-bottom: none;
+    }
+  
+  .reveal sup {
+    vertical-align: super; }
+  
+  .reveal sub {
+    vertical-align: sub; }
+  
+  .reveal small {
+    display: inline-block;
+    font-size: 0.6em;
+    line-height: 1.2em;
+    vertical-align: top; }
+  
+  .reveal small * {
+    vertical-align: top; }
+  
+  /*********************************************
+   * LINKS
+   *********************************************/
+  .reveal a {
+    color: #00008B;
+    text-decoration: none;
+    -webkit-transition: color .15s ease;
+    -moz-transition: color .15s ease;
+    transition: color .15s ease; }
+  
+  .reveal a:hover {
+    color: #0000f1;
+    text-shadow: none;
+    border: none; }
+  
+  .reveal .roll span:after {
+    color: #fff;
+    background: #00003f; }
+  
+  /*********************************************
+   * IMAGES
+   *********************************************/
+  .reveal section img {
+    margin-left: auto;
+    margin-right: auto;
+    background: rgba(255, 255, 255, 0.12);
+    border: 4px solid #000;
+    text-align: center !important; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); }
+  
+  .reveal section img.plain {
+    border: 0;
+    box-shadow: none; }
+  
+  .reveal a img {
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    transition: all .15s linear; 
+    text-align: center;}
+  
+  .reveal a:hover img {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #00008B;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.55); }
+  
+  /*********************************************
+   * NAVIGATION CONTROLS
+   *********************************************/
+  .reveal .controls {
+    color: #00008B; }
+  
+  /*********************************************
+   * PROGRESS BAR
+   *********************************************/
+  .reveal .progress {
+    background: rgba(0, 0, 0, 0.2);
+    color: #00008B; }
+  
+  .reveal .progress span {
+    -webkit-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+    -moz-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+    transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
+    </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">stitchfix-reproducibility</h1>
+</section>
+
+<section id="the-ingredients-of-a-reproducible-machine-learning-model" class="slide level2">
+<h2>The ingredients of a reproducible machine learning model</h2>
+<h3 id="chloe-mawer-phd">Chloe Mawer, PhD</h3>
+<p>Principal data scientist, <em>Lineage Logistics</em></p>
+<p>Adjunct lecturer, Masters of Science in Analytics, <em>Northwestern University</em></p>
+</section>
+<section><section id="irreproducibility-in-the-wild" class="title-slide slide level1"><h1>Irreproducibility in the wild</h1></section><section id="section" class="slide level2">
+<h2></h2>
+<p><img src="https://s3-us-west-2.amazonaws.com/lin-images/60-percent-of-time-deployment-works-everytime.jpg" alt="" width="600"/></p>
+<aside class="notes">
+<p>The world of deployment is not the same as that of development * <strong>Code</strong>: If you’re lucky (and if you can help it), the two can be written in the same language, but in many cases this is not true * If you’re handing off your code to another team, they won’t have the context for what your model is doing. They won’t know why you made the choices you did, and they can get lost in translation. They also won’t know that the results aren’t supposed to look like that<br />
+* Changes to code have to occur to handle new requirements (e.g. changes in input/output - see <em>data</em>); to add logging, testing, and exception handling (though of course you as a data scientist are doing that anyway!) * <strong>Data</strong>: Often you’re getting your historic training data through something like Impala or Hive from some kind of database. Sometimes, it’ll be CSVs, dumps from APIs. But, often the input data when you’re scoring is being fed from a different mechanism. Instead of panda’s <code>read_sql</code> or <code>read_csv</code>, you’re loading a JSON, XML, or some other format. Data types, null handling, and other idiosyncrasies of the data can impact your model predictions in different ways * <strong>Configuration</strong>: a lot of manually configured numbers can get lost along the way. Example: my scaling blunder (but money maker).</p>
+</aside>
+</section><section id="section-1" class="slide level2">
+<h2></h2>
+<p><img src="https://s3-us-west-2.amazonaws.com/lin-images/guy-who-wrote-code-gone.jpg" alt="Steps of a machine learning model" width="400" align="middle"/></p>
+</section><section class="slide level2">
+
+<p><a href="https://github.com/Droogans/unmaintainable-code">How to write unmaintainable code</a> by <em>Roedy Green</em></p>
+<aside class="notes">
+<ul>
+<li>I once worked at a client where 60% of the algorithms code base was written by a single guy who apparently despised any kind of documentation</li>
+<li>and wrote code like he was following this manual</li>
+<li>… he left the day week after our team arrived. No one was able to reproduce the models he had in production in the months that we were there</li>
+<li>and because they were so intertwined, no model could be created that produced the same or better results.</li>
+</ul>
+</aside>
+</section><section id="section-2" class="slide level2">
+<h2></h2>
+<p><img src="https://s3-us-west-2.amazonaws.com/lin-images/forgetting-how-your-own-code-works.jpg" alt="forgetting-how-your-own-code-works" width="400" align="middle"/></p>
+<aside class="notes">
+<ul>
+<li>And at the end of the day, fast forward your own head 6 months and vast amounts of code later, and without the proper preparation, you won’t be able to reproduce your models either</li>
+<li>Or even a few days later, if you’ve iterated through 100 different versions of models and realize that model last week was the best - too many times to count I at least have not been able to figure out which one it was!<br />
+</li>
+</ul>
+</aside>
+</section></section>
+<section><section id="why-is-this-so-hard" class="title-slide slide level1"><h1>Why is this so hard?</h1></section><section id="randomness-is-everywhere" class="slide level2">
+<h2>Randomness is everywhere</h2>
+<div>
+<ul>
+<li class="fragment">Sampling of data for training</li>
+<li class="fragment">Train/test split</li>
+<li class="fragment">Model initialization</li>
+<li class="fragment">Sampling of data within algorithm</li>
+<li class="fragment">Order of exposure of the model in training to the data</li>
+<li class="fragment">Sampling of data for evaluation and cross validation</li>
+<li class="fragment">And more!</li>
+</ul>
+</div>
+<aside class="notes">
+<ul>
+<li>Sampling of data for training
+<ul>
+<li>Either beforehand to handle data size</li>
+<li>Beforehand to balance dataset</li>
+</ul></li>
+<li>Train/test split</li>
+<li>Model initialization:
+<ul>
+<li>Initial locations for cluster centroids in Kmeans</li>
+</ul></li>
+<li>Sampling of data within algorithm
+<ul>
+<li>Random forests</li>
+<li>Solving of optimizers</li>
+</ul></li>
+<li>Order of exposure of the model in training to the data
+<ul>
+<li>Especially in neural nets</li>
+</ul></li>
+<li>Sampling of data for evaluation and cross validation</li>
+</ul>
+</aside>
+</section><section id="the-path-is-long" class="slide level2">
+<h2>The path is long</h2>
+<div id="center-image" style="text-align:center">
+<p><img src="https://s3-us-west-2.amazonaws.com/lin-images/why-so-hard-flowchart-code.jpg" alt="Steps of a machine learning model" width="400" align="middle"/></p>
+</div>
+<aside class="notes">
+<ul>
+<li>People have got this whole reproducible software thing pretty well figured out!</li>
+<li>Git solves all problems !</li>
+<li>Why is this any different?</li>
+</ul>
+</aside>
+</section><section id="section-3" class="slide level2">
+<h2></h2>
+<p><img src="https://s3-us-west-2.amazonaws.com/lin-images/why-so-hard-flowchart-code-and-params.jpg" alt="machine-learning-steps-code-and-params" width="400"/></p>
+<aside class="notes">
+<ul>
+<li>Well, for one thing, the level of parameterization is pretty huge</li>
+<li>Lots of parameters for each step along the way</li>
+<li>These parameters change over time and with each iteration of a model (whether during dev or a retraining)</li>
+<li></li>
+</ul>
+</aside>
+</section><section id="section-4" class="slide level2">
+<h2></h2>
+<p><img src="https://s3-us-west-2.amazonaws.com/lin-images/why-so-hard-flowchart-code-params-artifacts.jpg" alt="machine-learning-steps-code-params-and-artifacts" width="400"/></p>
+<aside class="notes">
+<ul>
+<li>Also, there are a ton of intermediate artifacts</li>
+<li>If you lose one of these, your ability to trace the origin of a reproducibility problem</li>
+</ul>
+</aside>
+</section></section>
+<section><section id="determinism" class="title-slide slide level1"><h1>Determinism</h1></section><section id="find-every-random-state-and-parameterize-it" class="slide level2">
+<h2>Find every random state and parameterize it</h2>
+</section></section>
+<section><section id="versioning-of-everything" class="title-slide slide level1"><h1>Versioning of everything</h1></section><section id="versioning-code-is-not-enough" class="slide level2">
+<h2>Versioning code is not enough</h2>
+</section><section id="parameter-versioning" class="slide level2">
+<h2>Parameter versioning</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">model:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="fu">name:</span><span class="at"> example-model  </span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="fu">author:</span><span class="at"> Chloe Mawer  </span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="fu">version:</span><span class="at"> AA1  </span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="fu">description:</span><span class="at"> Predicts a random result given some arbitrary data inputs as an example of this config file  </span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="fu">tags:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="kw">-</span> classifier  </a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="kw">-</span> housing  </a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="fu">dependencies:</span><span class="at"> requirements.txt  </span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="fu">load_data:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-11" title="11">  <span class="fu">how:</span><span class="at"> csv  </span></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="fu">csv:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-13" title="13">    <span class="fu">path:</span><span class="at"> data/sample/boston_house_prices.csv  </span></a>
+<a class="sourceLine" id="cb1-14" title="14">    <span class="fu">usecols:</span><span class="at"> </span><span class="kw">[</span>CRIM<span class="kw">,</span> ZN<span class="kw">,</span> INDUS<span class="kw">,</span> CHAS<span class="kw">,</span> NOX<span class="kw">,</span> RM<span class="kw">,</span> AGE<span class="kw">,</span> DIS<span class="kw">,</span> RAD<span class="kw">,</span> TAX<span class="kw">,</span> PTRATIO<span class="kw">,</span> B<span class="kw">,</span> LSTAT<span class="kw">]</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="fu">generate_features:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-16" title="16">  <span class="fu">make_categorical:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-17" title="17">    <span class="fu">columns:</span><span class="at"> RAD  </span></a>
+<a class="sourceLine" id="cb1-18" title="18">    <span class="fu">RAD:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-19" title="19">      <span class="fu">categories:</span><span class="at"> </span><span class="kw">[</span><span class="dv">1</span><span class="kw">,</span> <span class="dv">2</span><span class="kw">,</span> <span class="dv">3</span><span class="kw">,</span> <span class="dv">5</span><span class="kw">,</span> <span class="dv">4</span><span class="kw">,</span> <span class="dv">8</span><span class="kw">,</span> <span class="dv">6</span><span class="kw">,</span> <span class="dv">7</span><span class="kw">,</span> <span class="dv">24</span><span class="kw">]</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-20" title="20">      <span class="fu">one_hot_encode:</span><span class="at"> </span><span class="ch">True</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-21" title="21">  <span class="fu">bin_values:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-22" title="22">    <span class="fu">columns:</span><span class="at"> CRIM  </span></a>
+<a class="sourceLine" id="cb1-23" title="23">    <span class="fu">quartiles:</span><span class="at"> </span><span class="dv">2</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-24" title="24">  <span class="fu">save_dataset:</span><span class="at"> test/test/boston_house_prices_processed.csv  </span></a>
+<a class="sourceLine" id="cb1-25" title="25"><span class="fu">train_model:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-26" title="26">  <span class="fu">method:</span><span class="at"> xgboost  </span></a>
+<a class="sourceLine" id="cb1-27" title="27">  <span class="fu">choose_features:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-28" title="28">    <span class="fu">features_to_use:</span><span class="at"> </span><span class="kw">[</span>ZN<span class="kw">,</span> INDUS<span class="kw">,</span> CHAS<span class="kw">,</span> NOX<span class="kw">,</span> RM<span class="kw">,</span> AGE<span class="kw">,</span> DIS<span class="kw">,</span> RAD<span class="kw">,</span> TAX<span class="kw">,</span> PTRATIO<span class="kw">]</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-29" title="29">  <span class="fu">get_target:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-30" title="30">    <span class="fu">target:</span><span class="at"> CRIM  </span></a>
+<a class="sourceLine" id="cb1-31" title="31">  <span class="fu">split_data:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-32" title="32">    <span class="fu">train_size:</span><span class="at"> </span><span class="fl">0.5</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-33" title="33">    <span class="fu">test_size:</span><span class="at"> </span><span class="fl">0.25</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-34" title="34">    <span class="fu">validate_size:</span><span class="at"> </span><span class="fl">0.25</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-35" title="35">    <span class="fu">random_state:</span><span class="at"> </span><span class="dv">24</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-36" title="36">    <span class="fu">save_split_prefix:</span><span class="at"> test/test/example-boston  </span></a>
+<a class="sourceLine" id="cb1-37" title="37">  <span class="fu">params:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-38" title="38">    <span class="fu">max_depth:</span><span class="at"> </span><span class="dv">100</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-39" title="39">    <span class="fu">learning_rate:</span><span class="at"> </span><span class="dv">50</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-40" title="40">    <span class="fu">random_state:</span><span class="at"> </span><span class="dv">1019</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-41" title="41">  <span class="fu">fit:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-42" title="42">    <span class="fu">eval_metric:</span><span class="at"> auc  </span></a>
+<a class="sourceLine" id="cb1-43" title="43">    <span class="fu">verbose:</span><span class="at"> </span><span class="ch">True</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-44" title="44">  <span class="fu">save_tmo:</span><span class="at"> models/example-boston-crime-prediction.pkl  </span></a>
+<a class="sourceLine" id="cb1-45" title="45"><span class="fu">evaluate_model:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb1-46" title="46">  <span class="fu">metrics:</span><span class="at"> </span><span class="kw">[</span>auc<span class="kw">,</span> accuracy<span class="kw">,</span> logloss<span class="kw">]</span></a></code></pre></div>
+</section><section id="config.yml" class="slide level2">
+<h2><code>config.yml</code></h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">pyfileA:</span></a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="fu">functionA:</span></a>
+<a class="sourceLine" id="cb2-3" title="3">        <span class="fu">variableAA:</span><span class="at"> value</span></a>
+<a class="sourceLine" id="cb2-4" title="4">        <span class="fu">variableAB:</span><span class="at"> value</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="fu">functionB:</span></a>
+<a class="sourceLine" id="cb2-6" title="6">        <span class="fu">variableBA:</span><span class="at"> value</span></a>
+<a class="sourceLine" id="cb2-7" title="7">        <span class="fu">variableBB:</span><span class="at"> value</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="fu">save_results:</span><span class="at"> path/to/saveoutput.csv</span></a></code></pre></div>
+<div class="fragment">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="im">import</span> yaml</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="im">import</span> pyfileA <span class="im">as</span> pa</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;config.yml&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb3-5" title="5">    config <span class="op">=</span> yaml.load(f)</a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7">config_pyA <span class="op">=</span> config[<span class="st">&quot;pyfileA&quot;</span>]</a>
+<a class="sourceLine" id="cb3-8" title="8">df <span class="op">=</span> functionA(df, <span class="op">**</span>config_pyA[<span class="st">&quot;functionA&quot;</span>])</a>
+<a class="sourceLine" id="cb3-9" title="9">df <span class="op">=</span> functionB(df, <span class="op">**</span>config_pyA[<span class="st">&quot;functionB&quot;</span>])</a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="cf">if</span> <span class="st">&quot;save_results&quot;</span> <span class="kw">in</span> config_pyA:</a>
+<a class="sourceLine" id="cb3-11" title="11">    df.to_csv(config_pyA[<span class="st">&quot;save_results&quot;</span>])</a></code></pre></div>
+<aside class="notes">
+<ul>
+<li>Be explicit in your YAML structure of the exact files and functions you are using</li>
+<li>Use the exact variable names</li>
+<li>You can expand a dict into the arguments for a given</li>
+</ul>
+</aside>
+</div>
+</section><section id="data" class="slide level2">
+<h2>Data</h2>
+<div>
+<ul>
+<li class="fragment">At minimum, version an <em>explicit</em> query and include in configuration filters used.</li>
+<li class="fragment">Ideally, you can version the entire training dataset through tools like <code>gitlfs</code>, <code>S3</code> or your own database tables.</li>
+</ul>
+</div>
+<aside class="notes">
+<ul>
+<li>Query versioning does not cut it when the underlying data is changing.</li>
+<li><code>WHERE date &gt; "2019-01-01"</code> gives different results every time.</li>
+</ul>
+</aside>
+</section><section id="features" class="slide level2">
+<h2>Features</h2>
+<p>Often a feature is the output of another model and ideally should be treated this way and versioned accordingly since if it changes, the downstream models change too.</p>
+</section><section id="auxiliary-data" class="slide level2">
+<h2>Auxiliary data</h2>
+<p>Models can depend on auxiliary data as much or more than the structure of the input data.</p>
+<aside class="notes">
+<ul>
+<li>Example: one-hot encoding categories</li>
+</ul>
+</aside>
+</section><section id="trained-model-objects" class="slide level2">
+<h2>Trained model objects</h2>
+<aside class="notes">
+<ul>
+<li>Size depends on model - do the same with it as data so you stay consistent</li>
+</ul>
+</aside>
+</section><section id="workflows" class="slide level2">
+<h2>Workflows</h2>
+<ul>
+<li>Your workflow is a DAG</li>
+<li>Use tools like Make files, Airlflow, Luigi and version them</li>
+</ul>
+</section><section id="tying-all-the-file-types-together" class="slide level2">
+<h2>Tying all the file types together</h2>
+<ul>
+<li>Commit hashes</li>
+<li>Manually cultivated versioning list</li>
+<li>Dates</li>
+</ul>
+</section></section>
+<section><section id="reproducibility-testing" class="title-slide slide level1"><h1>Reproducibility testing</h1></section><section id="traditional-software-testing-is-not-enough" class="slide level2">
+<h2>Traditional software testing is not enough</h2>
+<p>(Though you should definitely do it still!)</p>
+</section><section id="model-testing" class="slide level2">
+<h2>Model testing</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">generate_features:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="fu">command:</span><span class="at"> python run.py generate_features --config=config/example-training-config.yml  </span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="kw">-</span> boston_house_prices_processed.csv  </a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="fu">train_model:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb4-8" title="8">  <span class="fu">command:</span><span class="at">  python run.py train_model --config=config/example-training-config.yml --csv=test/test/boston_house_prices_processed.csv  </span></a>
+<a class="sourceLine" id="cb4-9" title="9">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
+<a class="sourceLine" id="cb4-10" title="10">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
+<a class="sourceLine" id="cb4-11" title="11">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb4-12" title="12">    <span class="kw">-</span> example-boston-train-features.csv  </a>
+<a class="sourceLine" id="cb4-13" title="13">    <span class="kw">-</span> example-boston-train-targets.csv  </a>
+<a class="sourceLine" id="cb4-14" title="14">    <span class="kw">-</span> example-boston-test-features.csv  </a>
+<a class="sourceLine" id="cb4-15" title="15">    <span class="kw">-</span> example-boston-test-targets.csv  </a>
+<a class="sourceLine" id="cb4-16" title="16">    <span class="kw">-</span> example-boston-validate-features.csv  </a>
+<a class="sourceLine" id="cb4-17" title="17">    <span class="kw">-</span> example-boston-validate-targets.csv  </a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="fu">score_model:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb4-19" title="19">  <span class="fu">command:</span><span class="at">  python run.py score_model --csv=test/test/example-boston-validate.csv --config=config/example-training-config.yml  </span></a>
+<a class="sourceLine" id="cb4-20" title="20">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
+<a class="sourceLine" id="cb4-21" title="21">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
+<a class="sourceLine" id="cb4-22" title="22">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb4-23" title="23">    <span class="kw">-</span> example_boston_scores.csv</a></code></pre></div>
+</section></section>
+<section><section id="environment-management" class="title-slide slide level1"><h1>Environment management</h1></section><section id="requirements.txt" class="slide level2">
+<h2><code>requirements.txt</code></h2>
+</section><section id="conda" class="slide level2">
+<h2><code>conda</code></h2>
+<aside class="notes">
+<ul>
+<li>Separate out your development environment from your model</li>
+<li>Usually when you move to scripts</li>
+</ul>
+</aside>
+</section></section>
+<section><section id="code-alignment" class="title-slide slide level1"><h1>Code alignment</h1></section><section id="section-5" class="slide level2">
+<h2></h2>
+<p><img src="training-flow.jpeg" alt="Steps of a machine learning model - offline" width="400" align="middle"/></p>
+</section><section id="section-6" class="slide level2">
+<h2></h2>
+<p><img src="scoring-flow.jpeg" alt="Steps of a machine learning model - online" width="400" align="middle"/></p>
+</section></section>
+<section><section id="thank-you" class="title-slide slide level1"><h1>Thank you!</h1></section><section id="section-7" class="slide level2">
+<h2></h2>
+<p>You can find these slides at <a href="https://cmawer.github.io/reproducible-model">https://cmawer.github.io/reproducible-model</a></p>
+<p>cmawer@lineagelogistics.com</p>
+<p><span class="citation" data-cites="cmawer">@cmawer</span> <!--stackedit_data:
+eyJoaXN0b3J5IjpbLTEzNTY2MTA1NTYsOTQwOTA3NDM3LC0xMT
+MzMDEwNzg4LC0xNjQ4MTA0NDczLC05MTE2NzUxMTIsMTE2MTI4
+Mjk2Niw3MzA2NTAwODAsLTE2Nzg5MjE1ODksMjcyNzM2MjI3LD
+EzNjgzNjM4NywtMTUwMDk4Mjg1OSwzODQzMDQwNjEsLTM2NDk1
+MzMwNywtMTIzMDY0ODMyNCwtMTIzMDY0ODMyNCwxMjkxNzAzOT
+YyLC0yOTg2MjkyMDEsLTEwMDQ0MjAwODksMTY0MTgxNTM3OF19
+
+--></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="https://revealjs.com/lib/js/head.min.js"></script>
+  <script src="https://revealjs.com/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://revealjs.com/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://revealjs.com/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://revealjs.com/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
