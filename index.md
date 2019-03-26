@@ -134,6 +134,21 @@ The world of deployment is not the same as that of development
 
 ## Versioning code is not enough 
 
+## 
+
+```
+├── src                               <- Source data for the model 
+│   ├── ingest_data.py                <- Script for ingesting data from different sources 
+│   ├── generate_features.py          <- Script for cleaning and transforming data and generating features used for use in training and scoring.
+│   ├── train_model.py                <- Script for training machine learning model(s)
+│   ├── score_model.py                <- Script for scoring new predictions using a trained model.
+│   ├── postprocess.py                <- Script for postprocessing predictions and model results
+│   ├── evaluate_model.py             <- Script for evaluating model performance 
+│
+├── run.py                            <- Simplifies the execution of one or more of the src scripts 
+├── requirements.txt                  <- Python package dependencies 
+```
+
 ## Parameters and settings 
 
 ```yaml
