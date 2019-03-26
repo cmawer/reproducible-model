@@ -110,6 +110,8 @@ The world of deployment is not the same as that of development
 
 ::: 
 
+# Ingredients of a reproducible model 
+
 # Determinism 
 
 ## Find every random state and parameterize it 
