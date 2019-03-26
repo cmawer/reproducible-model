@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
-  <title>index</title>
+  <title>2</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -134,7 +134,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
   .reveal .slides > section,
   .reveal .slides > section > section {
     line-height: 1.3;
-    font-weight: inherit; }
+    font-weight: inherit;
+    text-align: left;
+    margin: 0 0 0 1em; }
   
   /*********************************************
    * HEADERS
@@ -151,12 +153,13 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
     font-weight: normal;
     line-height: 1.2;
     letter-spacing: normal;
+    text-align: center;
     /*text-transform: none;*/
     text-shadow: none;
     word-wrap: break-word; }
   
   .reveal h1 {
-    font-size: 3.77em; }
+    font-size: 3em; }
   
   .reveal h2 {
     font-size: 2.11em; }
@@ -214,20 +217,27 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
     list-style-type: disc; 
     padding-inline-start: 0px;
     text-align: left;
+    margin: 0 0 0 1em; 
   }
   
   .reveal ul ul {
-    list-style-type: square; }
+    list-style-type: square; 
+  text-align: left;
+    margin: 0 0 0 1em; }
   
   .reveal ul ul ul {
-    list-style-type: circle; }
+    list-style-type: circle; 
+  text-align: left;
+    margin: 0 0 0 1em; }
   
   .reveal ul ul,
   .reveal ul ol,
   .reveal ol ol,
   .reveal ol ul {
     display: block;
-    margin-left: 0px; }
+    margin-left: 0px; 
+  text-align: left;
+    margin: 0 0 0 1em; }
   
   .reveal dt {
     font-weight: bold; }
@@ -392,7 +402,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
     <div class="slides">
 
 <section id="title-slide">
-  <h1 class="title">index</h1>
+  <h1 class="title">2</h1>
 </section>
 
 <section id="the-ingredients-of-a-reproducible-machine-learning-model" class="slide level2">
@@ -403,10 +413,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section><section id="irreproducibility-in-the-wild" class="title-slide slide level1"><h1>Irreproducibility in the wild</h1></section><section id="section" class="slide level2">
 <h2></h2>
-<p><img src="https://s3-us-west-2.amazonaws.com/lin-images/60-percent-of-time-deployment-works-everytime.jpg" alt="" width="600"/></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/lin-images/60-percent-of-time-deployment-works-everytime.jpg" alt="" width="600" align="middle"/></p>
 <aside class="notes">
-<p>The world of deployment is not the same as that of development * <strong>Code</strong>: If you’re lucky (and if you can help it), the two can be written in the same language, but in many cases this is not true * If you’re handing off your code to another team, they won’t have the context for what your model is doing. They won’t know why you made the choices you did, and they can get lost in translation. They also won’t know that the results aren’t supposed to look like that<br />
-* Changes to code have to occur to handle new requirements (e.g. changes in input/output - see <em>data</em>); to add logging, testing, and exception handling (though of course you as a data scientist are doing that anyway!) * <strong>Data</strong>: Often you’re getting your historic training data through something like Impala or Hive from some kind of database. Sometimes, it’ll be CSVs, dumps from APIs. But, often the input data when you’re scoring is being fed from a different mechanism. Instead of panda’s <code>read_sql</code> or <code>read_csv</code>, you’re loading a JSON, XML, or some other format. Data types, null handling, and other idiosyncrasies of the data can impact your model predictions in different ways * <strong>Configuration</strong>: a lot of manually configured numbers can get lost along the way. Example: my scaling blunder (but money maker).</p>
+<p>The world of deployment is not the same as that of development</p>
+<ul>
+<li><p><strong>Code</strong>: If you’re lucky (and if you can help it), the two can be written in the same language, but in many cases this is not true</p>
+<ul>
+<li><p>If you’re handing off your code to another team, they won’t have the context for what your model is doing. They won’t know why you made the choices you did, and they can get lost in translation. They also won’t know that the results aren’t supposed to look like that</p></li>
+<li><p>Changes to code have to occur to handle new requirements (e.g. changes in input/output - see <em>data</em>); to add logging, testing, and exception handling (though of course you as a data scientist are doing that anyway!)</p></li>
+</ul></li>
+<li><p><strong>Data</strong>: Often you’re getting your historic training data through something like Impala or Hive from some kind of database. Sometimes, it’ll be CSVs, dumps from APIs. But, often the input data when you’re scoring is being fed from a different mechanism. Instead of panda’s <code>read_sql</code> or <code>read_csv</code>, you’re loading a JSON, XML, or some other format. Data types, null handling, and other idiosyncrasies of the data can impact your model predictions in different ways</p></li>
+<li><p><strong>Configuration</strong>: a lot of manually configured numbers can get lost along the way. Example: my scaling blunder (but money maker).</p></li>
+</ul>
 </aside>
 </section><section id="section-1" class="slide level2">
 <h2></h2>
@@ -416,10 +434,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p><a href="https://github.com/Droogans/unmaintainable-code">How to write unmaintainable code</a> by <em>Roedy Green</em></p>
 <aside class="notes">
 <ul>
-<li>I once worked at a client where 60% of the algorithms code base was written by a single guy who apparently despised any kind of documentation</li>
-<li>and wrote code like he was following this manual</li>
-<li>… he left the day week after our team arrived. No one was able to reproduce the models he had in production in the months that we were there</li>
-<li>and because they were so intertwined, no model could be created that produced the same or better results.</li>
+<li><p>I once worked at a client where 60% of the algorithms code base was written by a single guy who apparently despised any kind of documentation</p></li>
+<li><p>and wrote code like he was following this manual</p></li>
+<li><p>… he left the day week after our team arrived. No one was able to reproduce the models he had in production in the months that we were there</p></li>
+<li><p>and because they were so intertwined, no model could be created that produced the same or better results.</p></li>
 </ul>
 </aside>
 </section><section id="section-2" class="slide level2">
@@ -427,7 +445,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="https://s3-us-west-2.amazonaws.com/lin-images/forgetting-how-your-own-code-works.jpg" alt="forgetting-how-your-own-code-works" width="400" align="middle"/></p>
 <aside class="notes">
 <ul>
-<li>And at the end of the day, fast forward your own head 6 months and vast amounts of code later, and without the proper preparation, you won’t be able to reproduce your models either</li>
+<li><p>And at the end of the day, fast forward your own head 6 months and vast amounts of code later, and without the proper preparation, you won’t be able to reproduce your models either</p></li>
 <li>Or even a few days later, if you’ve iterated through 100 different versions of models and realize that model last week was the best - too many times to count I at least have not been able to figure out which one it was!<br />
 </li>
 </ul>
@@ -453,7 +471,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li>Either beforehand to handle data size</li>
 <li>Beforehand to balance dataset</li>
 </ul></li>
-<li>Train/test split</li>
+<li><p>Train/test split</p></li>
 <li>Model initialization:
 <ul>
 <li>Initial locations for cluster centroids in Kmeans</li>
@@ -509,8 +527,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </section></section>
 <section><section id="versioning-of-everything" class="title-slide slide level1"><h1>Versioning of everything</h1></section><section id="versioning-code-is-not-enough" class="slide level2">
 <h2>Versioning code is not enough</h2>
-</section><section id="parameter-versioning" class="slide level2">
-<h2>Parameter versioning</h2>
+</section><section id="parameters-and-settings" class="slide level2">
+<h2>Parameters and settings</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">model:</span><span class="at">  </span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="fu">name:</span><span class="at"> example-model  </span></a>
 <a class="sourceLine" id="cb1-3" title="3">  <span class="fu">author:</span><span class="at"> Chloe Mawer  </span></a>
@@ -592,7 +610,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div>
 <ul>
 <li class="fragment">At minimum, version an <em>explicit</em> query and include in configuration filters used.</li>
-<li class="fragment">Ideally, you can version the entire training dataset through tools like <code>gitlfs</code>, <code>S3</code> or your own database tables.</li>
+<li class="fragment">Source data can change so even this is not sufficient in many cases.</li>
+<li class="fragment">Ideally, you can version the entire training dataset through tools like <code>gitlfs</code>, <code>S3</code> or your own tables in HDFS or the database of your choosing.</li>
 </ul>
 </div>
 <aside class="notes">
@@ -603,10 +622,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </aside>
 </section><section id="features" class="slide level2">
 <h2>Features</h2>
-<p>Often a feature is the output of another model and ideally should be treated this way and versioned accordingly since if it changes, the downstream models change too.</p>
+<ul>
+<li>If it changes, the downstream models change too.</li>
+<li>Often a feature is the output of another model.</li>
+<li>Ideally each feature should be treated this way and managed accordingly.</li>
+</ul>
 </section><section id="auxiliary-data" class="slide level2">
 <h2>Auxiliary data</h2>
-<p>Models can depend on auxiliary data as much or more than the structure of the input data.</p>
+<p>Models can be highly dependent on auxiliary data, such as the options for categorical variables.</p>
 <aside class="notes">
 <ul>
 <li>Example: one-hot encoding categories</li>
@@ -625,8 +648,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li>Your workflow is a DAG</li>
 <li>Use tools like Make files, Airlflow, Luigi and version them</li>
 </ul>
-</section><section id="tying-all-the-file-types-together" class="slide level2">
-<h2>Tying all the file types together</h2>
+</section><section id="version-them-all-together" class="slide level2">
+<h2>Version them all together</h2>
 <ul>
 <li>Commit hashes</li>
 <li>Manually cultivated versioning list</li>
@@ -638,29 +661,44 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>(Though you should definitely do it still!)</p>
 </section><section id="model-testing" class="slide level2">
 <h2>Model testing</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">generate_features:</span><span class="at">  </span></a>
-<a class="sourceLine" id="cb4-2" title="2">  <span class="fu">command:</span><span class="at"> python run.py generate_features --config=config/example-training-config.yml  </span></a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">train_model:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="fu">command:</span><span class="at">  python run.py train_model --config=config/example-training-config.yml --csv=test/test/boston_house_prices_processed.csv  </span></a>
 <a class="sourceLine" id="cb4-3" title="3">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
 <a class="sourceLine" id="cb4-4" title="4">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
 <a class="sourceLine" id="cb4-5" title="5">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
-<a class="sourceLine" id="cb4-6" title="6">    <span class="kw">-</span> boston_house_prices_processed.csv  </a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="fu">train_model:</span><span class="at">  </span></a>
-<a class="sourceLine" id="cb4-8" title="8">  <span class="fu">command:</span><span class="at">  python run.py train_model --config=config/example-training-config.yml --csv=test/test/boston_house_prices_processed.csv  </span></a>
-<a class="sourceLine" id="cb4-9" title="9">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
-<a class="sourceLine" id="cb4-10" title="10">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
-<a class="sourceLine" id="cb4-11" title="11">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
-<a class="sourceLine" id="cb4-12" title="12">    <span class="kw">-</span> example-boston-train-features.csv  </a>
-<a class="sourceLine" id="cb4-13" title="13">    <span class="kw">-</span> example-boston-train-targets.csv  </a>
-<a class="sourceLine" id="cb4-14" title="14">    <span class="kw">-</span> example-boston-test-features.csv  </a>
-<a class="sourceLine" id="cb4-15" title="15">    <span class="kw">-</span> example-boston-test-targets.csv  </a>
-<a class="sourceLine" id="cb4-16" title="16">    <span class="kw">-</span> example-boston-validate-features.csv  </a>
-<a class="sourceLine" id="cb4-17" title="17">    <span class="kw">-</span> example-boston-validate-targets.csv  </a>
-<a class="sourceLine" id="cb4-18" title="18"><span class="fu">score_model:</span><span class="at">  </span></a>
-<a class="sourceLine" id="cb4-19" title="19">  <span class="fu">command:</span><span class="at">  python run.py score_model --csv=test/test/example-boston-validate.csv --config=config/example-training-config.yml  </span></a>
-<a class="sourceLine" id="cb4-20" title="20">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
-<a class="sourceLine" id="cb4-21" title="21">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
-<a class="sourceLine" id="cb4-22" title="22">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
-<a class="sourceLine" id="cb4-23" title="23">    <span class="kw">-</span> example_boston_scores.csv</a></code></pre></div>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="kw">-</span> example-boston-train-features.csv  </a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="kw">-</span> example-boston-train-targets.csv  </a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="kw">-</span> example-boston-test-features.csv  </a>
+<a class="sourceLine" id="cb4-9" title="9">    <span class="kw">-</span> example-boston-test-targets.csv  </a>
+<a class="sourceLine" id="cb4-10" title="10">    <span class="kw">-</span> example-boston-validate-features.csv  </a>
+<a class="sourceLine" id="cb4-11" title="11">    <span class="kw">-</span> example-boston-validate-targets.csv  </a>
+<a class="sourceLine" id="cb4-12" title="12">    <span class="kw">-</span> example-boston-fitted-params.yml</a></code></pre></div>
+</section><section id="section-5" class="slide level2">
+<h2></h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb5-1" title="1"><span class="fu">generate_features:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="fu">command:</span><span class="at"> python run.py generate_features --config=config/example-training-config.yml  </span></a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="kw">-</span> boston_house_prices_processed.csv  </a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="fu">train_model:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="fu">command:</span><span class="at">  python run.py train_model --config=config/example-training-config.yml --csv=test/test/boston_house_prices_processed.csv  </span></a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
+<a class="sourceLine" id="cb5-10" title="10">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
+<a class="sourceLine" id="cb5-11" title="11">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb5-12" title="12">    <span class="kw">-</span> example-boston-train-features.csv  </a>
+<a class="sourceLine" id="cb5-13" title="13">    <span class="kw">-</span> example-boston-train-targets.csv  </a>
+<a class="sourceLine" id="cb5-14" title="14">    <span class="kw">-</span> example-boston-test-features.csv  </a>
+<a class="sourceLine" id="cb5-15" title="15">    <span class="kw">-</span> example-boston-test-targets.csv  </a>
+<a class="sourceLine" id="cb5-16" title="16">    <span class="kw">-</span> example-boston-validate-features.csv  </a>
+<a class="sourceLine" id="cb5-17" title="17">    <span class="kw">-</span> example-boston-validate-targets.csv  </a>
+<a class="sourceLine" id="cb5-18" title="18">    <span class="kw">-</span> example-boston-fitted-params.yml</a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="fu">score_model:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb5-20" title="20">  <span class="fu">command:</span><span class="at">  python run.py score_model --csv=test/test/example-boston-validate.csv --config=config/example-training-config.yml  </span></a>
+<a class="sourceLine" id="cb5-21" title="21">  <span class="fu">true_dir:</span><span class="at"> test/true/  </span></a>
+<a class="sourceLine" id="cb5-22" title="22">  <span class="fu">test_dir:</span><span class="at"> test/test/  </span></a>
+<a class="sourceLine" id="cb5-23" title="23">  <span class="fu">files_to_compare:</span><span class="at">  </span></a>
+<a class="sourceLine" id="cb5-24" title="24">    <span class="kw">-</span> example_boston_scores.csv</a></code></pre></div>
 </section></section>
 <section><section id="environment-management" class="title-slide slide level1"><h1>Environment management</h1></section><section id="requirements.txt" class="slide level2">
 <h2><code>requirements.txt</code></h2>
@@ -673,14 +711,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 </aside>
 </section></section>
-<section><section id="code-alignment" class="title-slide slide level1"><h1>Code alignment</h1></section><section id="section-5" class="slide level2">
+<section><section id="code-alignment" class="title-slide slide level1"><h1>Code alignment</h1></section><section id="section-6" class="slide level2">
 <h2></h2>
 <p><img src="training-flow.jpeg" alt="Steps of a machine learning model - offline" width="400" align="middle"/></p>
-</section><section id="section-6" class="slide level2">
+</section><section id="section-7" class="slide level2">
 <h2></h2>
 <p><img src="scoring-flow.jpeg" alt="Steps of a machine learning model - online" width="400" align="middle"/></p>
 </section></section>
-<section><section id="thank-you" class="title-slide slide level1"><h1>Thank you!</h1></section><section id="section-7" class="slide level2">
+<section><section id="thank-you" class="title-slide slide level1"><h1>Thank you!</h1></section><section id="section-8" class="slide level2">
 <h2></h2>
 <p>You can find these slides at <a href="https://cmawer.github.io/reproducible-model">https://cmawer.github.io/reproducible-model</a></p>
 <p>cmawer@lineagelogistics.com</p>

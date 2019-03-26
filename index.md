@@ -11,15 +11,20 @@ Adjunct lecturer, Masters of Science in Analytics, *Northwestern University*
 ## 
 
 
-<img src="https://s3-us-west-2.amazonaws.com/lin-images/60-percent-of-time-deployment-works-everytime.jpg" alt="" width="600"/>
+<img src="https://s3-us-west-2.amazonaws.com/lin-images/60-percent-of-time-deployment-works-everytime.jpg" alt="" width="600" align="middle"/>
 
 ::: notes
 
 The world of deployment is not the same as that of development 
+
 * **Code**: If you're lucky (and if you can help it), the two can be written in the same language, but in many cases this is not true 
+
 	* If you're handing off your code to another team, they won't have the context for what your model is doing. They won't know why you made the choices you did, and they can get lost in translation. They also won't know that the results aren't supposed to look like that  
+	
 	* Changes to code have to occur to handle new requirements (e.g. changes in input/output - see *data*); to add logging, testing, and exception handling (though of course you as a data scientist are doing that anyway!)
+
 * **Data**: Often you're getting your historic training data through something like Impala or Hive from some kind of database. Sometimes, it'll be CSVs, dumps from APIs. But, often the input data when you're scoring is being fed from a different mechanism. Instead of panda's `read_sql` or `read_csv`, you're loading a JSON, XML, or some other format. Data types, null handling, and other idiosyncrasies of the data can impact your model predictions in different ways 
+
 * **Configuration**:  a lot of manually configured numbers can get lost along the way. Example: my scaling blunder (but money maker). 
 
 :::
@@ -34,8 +39,11 @@ The world of deployment is not the same as that of development
 
 ::: notes
 * I once worked at a client where 60% of the algorithms code base was written by a single guy who apparently despised any kind of documentation 
+
 * and wrote code like he was following this manual
+
 * ... he left the day week after our team arrived.  No one was able to reproduce the models he had in production in the months that we were there 
+
 * and because they were so intertwined, no model could be created that produced the same or better results. 
 
 :::
@@ -46,6 +54,7 @@ The world of deployment is not the same as that of development
 
 ::: notes 
 * And at the end of the day, fast forward your own head 6 months and vast amounts of code later, and without the proper preparation, you won't be able to reproduce your models either 
+
 * Or even a few days later, if you've iterated through 100 different versions of models and realize that model last week was the best - too many times to count I at least have not been able to figure out which one it was!  
 ::: 
 
@@ -66,14 +75,19 @@ The world of deployment is not the same as that of development
 * Sampling of data for training 
 	* Either beforehand to handle data size
 	* Beforehand to balance dataset
+
 * Train/test split 
+
 * Model initialization: 
 	* Initial locations for cluster centroids in Kmeans 
+
 * Sampling of data within algorithm
 	* Random forests 
 	* Solving of optimizers 
+
 * Order of exposure of the model in training to the data
 	* Especially in neural nets 
+
 * Sampling of data for evaluation and cross validation 
 :::
 
@@ -118,9 +132,9 @@ The world of deployment is not the same as that of development
 
 # Versioning of everything 
 
-##  Versioning code is not enough 
+## Versioning code is not enough 
 
-## Parameter versioning
+## Parameters and settings 
 
 ```yaml
 model:  
@@ -211,7 +225,9 @@ if "save_results" in config_pyA:
 ## Data
 ::: incremental 
 * At minimum, version an _explicit_ query and include in configuration filters used.
-* Ideally, you can version the entire training dataset through tools like `gitlfs`, `S3` or your own database tables. 
+* Source data can change so even this is not sufficient in many cases. 
+* Ideally, you can version the entire training dataset through tools like `gitlfs`, `S3` or your own tables in HDFS or the database of your choosing. 
+
 :::
 
 ::: notes 
@@ -223,12 +239,13 @@ if "save_results" in config_pyA:
 
 
 ## Features 
-Often a feature is the output of another model and ideally should be treated this way and versioned accordingly since if it changes, the downstream models change too. 
-
+* If it changes, the downstream models change too. 
+* Often a feature is the output of another model.
+* Ideally each feature should be treated this way and managed accordingly. 
 
 ## Auxiliary data 
 
- Models can depend on auxiliary data as much or more than the structure of the input data.
+Models can be highly dependent on auxiliary data, such as the options for categorical variables. 
 
 ::: notes 
 
@@ -250,7 +267,7 @@ Often a feature is the output of another model and ideally should be treated thi
 * Your workflow is a DAG
 * Use tools like Make files, Airlflow, Luigi and version them
 
-## Tying all the file types together 
+## Version them all together 
 * Commit hashes
 * Manually cultivated versioning list 
 * Dates 
@@ -261,6 +278,24 @@ Often a feature is the output of another model and ideally should be treated thi
 (Though you should definitely do it still!) 
 
 ## Model testing 
+
+
+```yaml
+train_model:  
+  command:  python run.py train_model --config=config/example-training-config.yml --csv=test/test/boston_house_prices_processed.csv  
+  true_dir: test/true/  
+  test_dir: test/test/  
+  files_to_compare:  
+    - example-boston-train-features.csv  
+    - example-boston-train-targets.csv  
+    - example-boston-test-features.csv  
+    - example-boston-test-targets.csv  
+    - example-boston-validate-features.csv  
+    - example-boston-validate-targets.csv  
+	- example-boston-fitted-params.yml
+  ```
+  
+## 
 
 ```yaml
 generate_features:  
@@ -280,6 +315,7 @@ train_model:
     - example-boston-test-targets.csv  
     - example-boston-validate-features.csv  
     - example-boston-validate-targets.csv  
+    - example-boston-fitted-params.yml
 score_model:  
   command:  python run.py score_model --csv=test/test/example-boston-validate.csv --config=config/example-training-config.yml  
   true_dir: test/true/  
