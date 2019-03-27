@@ -1,10 +1,13 @@
 ## The ingredients of a reproducible machine learning model
 
-### Chloe Mawer, PhD
+</br>
+</br> 
 
-Principal data scientist, *Lineage Logistics*
+#### Chloe Mawer, PhD
 
-Adjunct lecturer, Masters of Science in Analytics, *Northwestern University* 
+##### Principal data scientist, *Lineage Logistics*
+
+##### Adjunct lecturer, Masters of Science in Analytics, *Northwestern University* 
 
 # Irreproducibility in the wild 
 
@@ -389,7 +392,7 @@ and the reproducible model template repo at </br> [https://github.com/cmawer/rep
 </br>
 
 
-#### We're hiring! 
+### We're hiring! 
 
 Chloe Mawer | Lineage Logistics 
 
