@@ -1,0 +1,58 @@
+name: eda3
+channels:
+- conda-forge
+- defaults
+dependencies:
+- ipywidgets
+- black
+- bqplot
+- jupyter_contrib_core
+- jupyter_contrib_nbextensions
+- jupyter_highlight_selected_word
+- jupyter_latex_envs
+- jupyter_nbextensions_configurator
+- prettytable
+- anaconda-client
+- ipykernel
+- ipython
+- ipython_genutils
+- jupyter_client
+- jupyter_console
+- jupyter_core
+- jupyterlab
+- matplotlib
+- missingno
+- nbconvert
+- notebook
+- numpy
+- openssl
+- pandas
+- pandas-profiling
+- pip
+- pivottablejs
+- python=3.6
+- qgrid
+- requests
+- scikit-learn
+- scipy
+- seaborn
+- setuptools
+- statsmodels
+- tqdm
+- vaex
+- widgetsnbextension
+- yapf
+- pip:
+  - folium
+  - ipython-genutils
+  - jupyter-client
+  - jupyter-console
+  - jupyter-contrib-core
+  - jupyter-contrib-nbextensions
+  - jupyter-core
+  - jupyter-highlight-selected-word
+  - jupyter-latex-envs
+  - jupyter-nbextensions-configurator
+  - pyhive[presto]
+  - sql_magic
+  - SQLAlchemy
