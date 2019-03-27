@@ -65,6 +65,7 @@ The world of deployment is not the same as that of development
 
 ## Randomness is everywhere  
 </br>
+
 ::: incremental
 * Sampling of data for training 
 * Train/test split 
