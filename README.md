@@ -53,10 +53,9 @@ This project structure was partially influenced by the [Cookiecutter Data Scienc
 
 ## Environment setup 
 
-### For the model
-The `requirements.txt` file contains the packages required to run the model code. An environment can be set up in two ways. 
+The `requirements.txt` file contains the packages required to run the model code. An environment can be set up in two ways. See bottom of README for exploratory data analysis environment setup. 
 
-#### With `virtualenv` and `pip`
+### With `virtualenv` and `pip`
 
 ```bash
 pip install virtualenv
@@ -69,10 +68,19 @@ pip -r requirements.txt
 
 ```
 
-### with `conda`
+## Reproducibility testing
+Check that results and code behavior are what is expected  
 
 
-## For development
+From the repo root directory, run:
+ 
+ ```python
+ python run.py test
+```
+ to run tests to check that model code produces expected output. See `test/README.md` for more info. 
+
+
+## Environment setup for exploratory analysis
 
 `environment.yml` contains the specifications for an environment that will get you started for exploratory data analysis. 
 It also contains the packages imported in the template Jupyer notebook, `notebooks/template.ipynb` (see more info below).  
@@ -125,13 +133,3 @@ There are a lot more options so take a look through!
  * A pretty Lineage logo at the top 
  
  
-## Reproducibility testing
-Check that results and code behavior are what is expected  
-
-
-From the repo root directory, run:
- 
- ```python
- python run.py test
-```
- to run tests to check that model code produces expected output. See `test/README.md` for more info. 
