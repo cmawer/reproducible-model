@@ -93,7 +93,7 @@ The world of deployment is not the same as that of development
 
 ## The path is long   
 <div id='center-image' style='text-align:center'>
-<img src="https://s3-us-west-2.amazonaws.com/lin-images/why-so-hard-flowchart-code.jpg" alt="Steps of a machine learning model" width="400" align="middle"/>
+<img src="figures/code-only.jpeg" alt="Steps of a machine learning model" width="400" align="middle"/>
 </div> 
 
 ::: notes 
@@ -105,7 +105,7 @@ The world of deployment is not the same as that of development
 
 ##  
 
-<img src="https://s3-us-west-2.amazonaws.com/lin-images/why-so-hard-flowchart-code-and-params.jpg" alt="machine-learning-steps-code-and-params" width="400"/>
+<img src=""figures/code-and-params.jpeg"" alt="machine-learning-steps-code-and-params" width="400"/>
 
 ::: notes
 * Well, for one thing, the level of parameterization is pretty huge
@@ -116,7 +116,8 @@ The world of deployment is not the same as that of development
 
 ##    
 
-<img src="https://s3-us-west-2.amazonaws.com/lin-images/why-so-hard-flowchart-code-params-artifacts.jpg" alt="machine-learning-steps-code-params-and-artifacts" width="400"/>
+<img src="figures/all-normal-data.jpeg" alt="machine-learning-steps-code-params-and-artifacts" width="400"/>
+
 
 ::: notes
 * Also, there are a ton of intermediate artifacts
@@ -375,11 +376,21 @@ score_model:
 
 # Thank you! 
 
-##  
+##  Thank you! 
 
+ </br>
 	
-You can find these slides at [https://cmawer.github.io/reproducible-model](https://cmawer.github.io/reproducible-model)
+You can find these slides at </br> [https://cmawer.github.io/reproducible-model](https://cmawer.github.io/reproducible-model)
+ 
+ </br>
 
-cmawer@lineagelogistics.com 
+and the reproducible model template repo at </br> [https://github.com/cmawer/reproducible-model](https://github.com/cmawer/reproducible-model)
 
-@cmawer 
+</br>
+
+
+#### We're hiring! 
+
+Chloe Mawer | Lineage Logistics 
+
+cmawer@lineagelogistics.com | @cmawer 
