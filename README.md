@@ -60,9 +60,9 @@ The `requirements.txt` file contains the packages required to run the model code
 ```bash
 pip install virtualenv
 
-virtualenv myproject
+virtualenv reprod
 
-source myproject/venv/bin/activate
+source reprod/bin/activate
 
 pip -r requirements.txt
 
