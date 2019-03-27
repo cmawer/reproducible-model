@@ -396,4 +396,4 @@ and the reproducible model template repo at </br> [https://github.com/cmawer/rep
 
 Chloe Mawer | Lineage Logistics 
 
-cmawer@lineagelogistics.com | @cmawer 
+cmawer@lineagelogistics.com | @chloemawer 
