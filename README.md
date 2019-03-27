@@ -1,6 +1,6 @@
 # Example of a reproducible machine learning model 
 
-See [https://cmawer.github.io/reproducible-model](https://cmawer.github.io/reproducible-model) for the lightening talk I gave at the Women in Machine Learning and Data Science meetup on March 26, 2019 at Stitch Fix on how to create a reproducible model.
+See [https://cmawer.github.io/reproducible-model](https://cmawer.github.io/reproducible-model) for the lightening talk I gave at the Women in Machine Learning and Data Science meetup on March 26, 2019 at Stitch Fix on the ingredients of a reproducible machine learning model.
  
 
 ## Repo structure 
