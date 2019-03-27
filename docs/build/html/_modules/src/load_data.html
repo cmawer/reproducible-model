@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.load_data &mdash; reproducible-model 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> reproducible-model
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../model/src/src.html">src package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model/test/test.html">test package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model/run.html">run module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">reproducible-model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.load_data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.load_data</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ifin"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.ifin">[docs]</a><span class="k">def</span> <span class="nf">ifin</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span>
+    <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">alt</span></div>
+
+
+<div class="viewcode-block" id="copy_file_from_s3"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.copy_file_from_s3">[docs]</a><span class="k">def</span> <span class="nf">copy_file_from_s3</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">s3path</span><span class="p">,</span> <span class="n">s3</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">s3</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s2">&quot;s3&quot;</span><span class="p">)</span>
+    <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;s3://([\w._-]+)/([\w./_-]+)&quot;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">s3path</span><span class="p">)</span>
+    <span class="n">s3bucket</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">s3path</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="n">s3bucket</span><span class="p">)</span>
+
+    <span class="n">s3path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s3path</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+    <span class="n">bucket</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">s3path</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="copy_files_from_s3"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.copy_files_from_s3">[docs]</a><span class="k">def</span> <span class="nf">copy_files_from_s3</span><span class="p">(</span><span class="n">s3path</span><span class="p">,</span> <span class="n">destpath</span><span class="p">):</span>
+    <span class="n">s3path</span> <span class="o">=</span> <span class="p">[</span><span class="n">s3path</span><span class="p">]</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">s3path</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span> <span class="k">else</span> <span class="n">s3path</span>
+    <span class="n">destpath</span> <span class="o">=</span> <span class="p">[</span><span class="n">destpath</span><span class="p">]</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">destpath</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span> <span class="k">else</span> <span class="n">destpath</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s3path</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">destpath</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">s3p</span><span class="p">,</span> <span class="n">destp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">s3path</span><span class="p">,</span> <span class="n">destpath</span><span class="p">):</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;aws s3 --recursive cp </span><span class="si">{s3path}</span><span class="s2"> </span><span class="si">{destpath}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s3path</span><span class="o">=</span><span class="n">s3p</span><span class="p">,</span> <span class="n">destpath</span><span class="o">=</span><span class="n">destp</span><span class="p">)</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">split</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="format_sql"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.format_sql">[docs]</a><span class="k">def</span> <span class="nf">format_sql</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">replace_sqlvar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">replace_var</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">replace_sqlvar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">replace_sqlvar</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;${var:</span><span class="si">%s</span><span class="s2">}&quot;</span> <span class="o">%</span> <span class="n">var</span><span class="p">,</span> <span class="n">replace_sqlvar</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">replace_var</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">replace_var</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">python</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%%</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sql</span></div>
+
+
+<div class="viewcode-block" id="load_sql"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.load_sql">[docs]</a><span class="k">def</span> <span class="nf">load_sql</span><span class="p">(</span><span class="n">path_to_sql</span><span class="p">,</span> <span class="n">load_comments</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replace_sqlvar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">replace_var</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_to_sql</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">load_comments</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;--&quot;</span><span class="p">):</span>
+                <span class="n">sql</span> <span class="o">+=</span> <span class="n">line</span>
+
+    <span class="n">sql</span> <span class="o">=</span> <span class="n">format_sql</span><span class="p">(</span><span class="n">replace_sqlvar</span><span class="o">=</span><span class="n">replace_sqlvar</span><span class="p">,</span> <span class="n">replace_var</span><span class="o">=</span><span class="n">replace_var</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="n">python</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sql</span></div>
+
+
+<div class="viewcode-block" id="create_connection"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.create_connection">[docs]</a><span class="k">def</span> <span class="nf">create_connection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sqltype</span><span class="o">=</span><span class="s2">&quot;mysql+pymysql&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3308</span><span class="p">,</span>
+                      <span class="n">user_env</span><span class="o">=</span><span class="s2">&quot;amazonRDS_user&quot;</span><span class="p">,</span> <span class="n">password_env</span><span class="o">=</span><span class="s2">&quot;amazonRDS_pw&quot;</span><span class="p">,</span>
+                      <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dbconfig</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">dbconfig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dbconfig</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">db</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="n">host</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">]</span>
+        <span class="n">database</span> <span class="o">=</span> <span class="n">ifin</span><span class="p">(</span><span class="s2">&quot;dbname&quot;</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">sqltype</span> <span class="o">=</span> <span class="n">ifin</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">sqltype</span><span class="p">)</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">]</span>
+        <span class="n">user_env</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;user_env&quot;</span><span class="p">]</span>
+        <span class="n">password_env</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;password_env&quot;</span><span class="p">]</span>
+
+    <span class="n">username</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_env</span><span class="p">)</span> <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">username</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">password_env</span><span class="p">)</span> <span class="k">if</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">password</span>
+
+    <span class="n">engine_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{sqltype}</span><span class="s2">://</span><span class="si">{username}</span><span class="s2">:</span><span class="si">{password}</span><span class="s2">@</span><span class="si">{host}</span><span class="s2">:</span><span class="si">{port}</span><span class="s2">/</span><span class="si">{database}</span><span class="s2">&quot;</span>
+    <span class="n">engine_string</span> <span class="o">=</span> <span class="n">engine_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sqltype</span><span class="o">=</span><span class="n">sqltype</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+                                         <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">)</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span><span class="n">engine_string</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">conn</span></div>
+
+
+<div class="viewcode-block" id="query_data"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.query_data">[docs]</a><span class="k">def</span> <span class="nf">query_data</span><span class="p">(</span><span class="n">sql</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path_to_sql</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dbconfig</span><span class="o">=</span><span class="s2">&quot;config/dbconfig.yml&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">load_comments</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">replace_sqlvar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">replace_var</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">sql</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">path_to_sql</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">load_sql</span><span class="p">(</span><span class="n">path_to_sql</span><span class="p">,</span>
+                       <span class="n">load_comments</span><span class="o">=</span><span class="n">load_comments</span><span class="p">,</span>
+                       <span class="n">replace_sqlvar</span><span class="o">=</span><span class="n">replace_sqlvar</span><span class="p">,</span>
+                       <span class="n">replace_var</span><span class="o">=</span><span class="n">replace_var</span><span class="p">,</span>
+                       <span class="n">python</span><span class="o">=</span><span class="n">python</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">sql</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">format_sql</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span>
+                         <span class="n">replace_sqlvar</span><span class="o">=</span><span class="n">replace_sqlvar</span><span class="p">,</span>
+                         <span class="n">replace_var</span><span class="o">=</span><span class="n">replace_var</span><span class="p">,</span>
+                         <span class="n">python</span><span class="o">=</span><span class="n">python</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only sql or path_to_sql should be provided&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">conn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">create_connection</span><span class="p">(</span><span class="n">dbconfig</span><span class="o">=</span><span class="n">dbconfig</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="n">conn</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dataframe with </span><span class="si">%i</span><span class="s2"> rows loaded from query&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="read_csv"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.read_csv">[docs]</a><span class="k">def</span> <span class="nf">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="s2">&quot;usecols&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Columns being read from csv: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;usecols&quot;</span><span class="p">]))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dataframe with </span><span class="si">%i</span><span class="s2"> rows loaded from </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../model/src/src.html#src.load_data.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">how</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">csv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        how: How to load data. Options are one of remaining keyword args (e.g. query, read_csv)</span>
+<span class="sd">        query: Dictionary of inputs to `query_data()`, None if how=&quot;csv&quot;</span>
+<span class="sd">        csv:  Dictionary of inputs to `read_csv()`, None if how=&quot;query&quot;</span>
+
+<span class="sd">    Returns: Pandas dataframe</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">how</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">query</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">query_data</span><span class="p">(</span><span class="o">**</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">how</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;csv&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">csv</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s2">&quot;path&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">csv</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;csv[&#39;path&#39;] must exist be provided&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="o">**</span><span class="n">csv</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;how must be given as &#39;query&#39; or &#39;csv&#39;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--config&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to yaml file with configurations&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--save&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to where the dataset should be saved to (optional&#39;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;load_data&quot;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

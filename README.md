@@ -1,3 +1,10 @@
+# Template for a reproducible model 
+
+See [https://cmawer.github.io/reproducible-model](https://cmawer.github.io/reproducible-model) for the lightening talk I gave at the Women in Machine Learning and Data Science meetup on March 26, 2019 at Stitch Fix on how to create a reproducible model.
+ 
+
+## Repo structure 
+
 ```
 ├── README.md                         <- You are here
 │
@@ -42,3 +49,11 @@
 ├── run.py                            <- Simplifies the execution of one or more of the src scripts 
 ├── requirements.txt                  <- Python package dependencies 
 ```
+
+## Test: check that results and code behavior are what are expected  
+From the repo root directory, run:
+ 
+ ```python
+ #python run.py test
+```
+ to run tests to check that model code produces expected output. See `test/README.md` for more info. 

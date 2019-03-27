@@ -19,11 +19,11 @@ If new files are added, the autodoc files should be recreated by running
 
 
 ```bash
-sphinx-apidoc -f -o source/sybil/ ../ ../data/ ../figures ../src ../test
+sphinx-apidoc -f -o source/model/ ../ ../data/ ../figures ../src ../test
 
-sphinx-apidoc -f -o source/sybil/test/ ../test/ 
+sphinx-apidoc -f -o source/model/test/ ../test/ 
 
-sphinx-apidoc -f -o source/sybil/src/ ../src/ ../src/archive/
+sphinx-apidoc -f -o source/model/src/ ../src/ ../src/archive/
 ```
 
 as in step 3 in the setup guide below. 
@@ -61,11 +61,11 @@ This documentation was created by doing the following from this directory:
 3. Run `sphinx-apidoc` to autogenerate pages with `autodoc` as follows from the command line:
 
     ```bash
-    sphinx-apidoc -f -o source/sybil/ ../ ../data/ ../figures ../src ../test
+    sphinx-apidoc -f -o source/model/ ../ ../data/ ../figures ../src ../test
     
-    sphinx-apidoc -f -o source/sybil/test/ ../test/ 
+    sphinx-apidoc -f -o source/model/test/ ../test/ 
     
-    sphinx-apidoc -f -o source/sybil/src/ ../src/ ../src/archive/
+    sphinx-apidoc -f -o source/model/src/ ../src/ ../src/archive/
     ```
 
 4. Add to `source/index.rst`:
@@ -76,9 +76,9 @@ This documentation was created by doing the following from this directory:
     .. toctree::
        :maxdepth: 2
     
-       sybil/src/src
-       sybil/test/test
-       sybil/sybil
+       model/src/src
+       model/test/test
+       model/run
     ```
 
 5. Make html files by running from the command line: 
