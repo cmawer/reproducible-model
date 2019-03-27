@@ -139,7 +139,7 @@ The world of deployment is not the same as that of development
 ```
 ├── src                               <- Source data for the model 
 │   ├── ingest_data.py                <- Script for ingesting data from different sources 
-│   ├── generate_features.py          <- Script for cleaning and transforming data and generating features used for use in training and scoring.
+│   ├── generate_features.py          <- Script for cleaning and transforming data for use in training and scoring.
 │   ├── train_model.py                <- Script for training machine learning model(s)
 │   ├── score_model.py                <- Script for scoring new predictions using a trained model.
 │   ├── postprocess.py                <- Script for postprocessing predictions and model results
@@ -254,13 +254,21 @@ if "save_results" in config_pyA:
 
 
 ## Features 
+
+::: incremental 
 * If it changes, the downstream models change too. 
 * Often a feature is the output of another model.
 * Ideally each feature should be treated this way and managed accordingly. 
 
+:::
+
 ## Auxiliary data 
 
-Models can be highly dependent on auxiliary data, such as the options for categorical variables. 
+::: incremental 
+* Models can be highly dependent on auxiliary data, such as the options for categorical variables. 
+* If this data gets out of sync with the model files or code, it can cause code to fail.
+
+::: 
 
 ::: notes 
 
@@ -279,12 +287,15 @@ Models can be highly dependent on auxiliary data, such as the options for catego
 
 ## Workflows
 
-* Your workflow is a DAG
-* Use tools like Make files, Airlflow, Luigi and version them
+::: incremental 
+* Something needs to remember how the steps were stringed together.
+* Use tools like Make files, Airlflow, Luigi and version them.
+
+:::
 
 ## Version them all together 
 * Commit hashes
-* Manually cultivated versioning list 
+* Manually cultivated version list
 * Dates 
 
 # Reproducibility testing 
@@ -356,11 +367,11 @@ score_model:
 
 ##  
 
-<img src="training-flow.jpeg" alt="Steps of a machine learning model - offline" width="400" align="middle"/>
+<img src="figures/training-flow.jpeg" alt="Steps of a machine learning model - offline" width="400" align="middle"/>
 
 ##  
 
-<img src="scoring-flow.jpeg" alt="Steps of a machine learning model - online" width="400" align="middle"/>
+<img src="figures/scoring-flow.jpeg" alt="Steps of a machine learning model - online" width="400" align="middle"/>
 
 # Thank you! 
 
@@ -372,12 +383,3 @@ You can find these slides at [https://cmawer.github.io/reproducible-model](https
 cmawer@lineagelogistics.com 
 
 @cmawer 
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzNTY2MTA1NTYsOTQwOTA3NDM3LC0xMT
-MzMDEwNzg4LC0xNjQ4MTA0NDczLC05MTE2NzUxMTIsMTE2MTI4
-Mjk2Niw3MzA2NTAwODAsLTE2Nzg5MjE1ODksMjcyNzM2MjI3LD
-EzNjgzNjM4NywtMTUwMDk4Mjg1OSwzODQzMDQwNjEsLTM2NDk1
-MzMwNywtMTIzMDY0ODMyNCwtMTIzMDY0ODMyNCwxMjkxNzAzOT
-YyLC0yOTg2MjkyMDEsLTEwMDQ0MjAwODksMTY0MTgxNTM3OF19
-
--->
