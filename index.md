@@ -108,7 +108,7 @@ The world of deployment is not the same as that of development
 
 ##  
 
-<img src=""figures/code-and-params.jpeg"" alt="machine-learning-steps-code-and-params" width="400"/>
+<img src="figures/code-and-params.jpeg" alt="machine-learning-steps-code-and-params" width="400"/>
 
 ::: notes
 * Well, for one thing, the level of parameterization is pretty huge
