@@ -5,9 +5,9 @@
 
 #### Chloe Mawer, PhD
 
-##### Principal data scientist, *Lineage Logistics*
+##### Principal Data Scientist, *Lineage Logistics*
 
-##### Adjunct lecturer, Masters of Science in Analytics, *Northwestern University* 
+##### Adjunct Lecturer, Masters of Science in Analytics, *Northwestern University* 
 
 # Irreproducibility in the wild 
 
@@ -64,6 +64,7 @@ The world of deployment is not the same as that of development
 # Why is this so hard? 
 
 ## Randomness is everywhere  
+</br>
 ::: incremental
 * Sampling of data for training 
 * Train/test split 
@@ -391,8 +392,6 @@ and the reproducible model template repo at </br> [https://github.com/cmawer/rep
 
 </br>
 
-
-### We're hiring! 
 
 Chloe Mawer | Lineage Logistics 
 
