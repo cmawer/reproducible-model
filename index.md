@@ -14,7 +14,7 @@
 ## 
 
 
-<img src="https://s3-us-west-2.amazonaws.com/lin-images/60-percent-of-time-deployment-works-everytime.jpg" alt="" width="600" align="middle"/>
+<center><img src="https://s3-us-west-2.amazonaws.com/lin-images/60-percent-of-time-deployment-works-everytime.jpg" alt="" width="600" align="middle"/></center>
 
 ::: notes
 
@@ -34,7 +34,7 @@ The world of deployment is not the same as that of development
 
 ##
 
-<img src="https://s3-us-west-2.amazonaws.com/lin-images/guy-who-wrote-code-gone.jpg" alt="Steps of a machine learning model" width="400" align="middle"/>
+<center><img src="https://s3-us-west-2.amazonaws.com/lin-images/guy-who-wrote-code-gone.jpg" alt="Steps of a machine learning model" width="400" align="middle"/></center>
 
 ----
 
@@ -53,7 +53,7 @@ The world of deployment is not the same as that of development
 
 ##  
 
-<img src="https://s3-us-west-2.amazonaws.com/lin-images/forgetting-how-your-own-code-works.jpg" alt="forgetting-how-your-own-code-works" width="400" align="middle"/>
+<center><img src="https://s3-us-west-2.amazonaws.com/lin-images/forgetting-how-your-own-code-works.jpg" alt="forgetting-how-your-own-code-works" width="400" align="middle"/></center>
 
 ::: notes 
 * And at the end of the day, fast forward your own head 6 months and vast amounts of code later, and without the proper preparation, you won't be able to reproduce your models either 
@@ -110,7 +110,7 @@ The world of deployment is not the same as that of development
 
 ##  
 
-<img src="figures/code-and-params.jpeg" alt="machine-learning-steps-code-and-params" width="400"/>
+<center><img src="figures/code-and-params.jpeg" alt="machine-learning-steps-code-and-params" width="400"/></center>
 
 ::: notes
 * Well, for one thing, the level of parameterization is pretty huge
@@ -121,7 +121,7 @@ The world of deployment is not the same as that of development
 
 ##    
 
-<img src="figures/all-normal-data.jpeg" alt="machine-learning-steps-code-params-and-artifacts" width="400"/>
+<center><img src="figures/all-normal-data.jpeg" alt="machine-learning-steps-code-params-and-artifacts" width="400"/></center>
 
 
 ::: notes
@@ -262,7 +262,7 @@ if "save_results" in config_pyA:
 ## Features 
 
 ::: incremental 
-* If it changes, the downstream models change too. 
+* If a feature changes, the downstream models change too.
 * Often a feature is the output of another model.
 * Ideally each feature should be treated this way and managed accordingly. 
 
@@ -307,7 +307,7 @@ if "save_results" in config_pyA:
 # Reproducibility testing 
 
 ## Traditional software testing is not enough 
-(Though you should definitely do it still!) 
+<center>(Though you should definitely do it still!)</center>
 
 ## Model testing 
 
@@ -373,15 +373,17 @@ score_model:
 
 ##  
 
-<img src="figures/training-flow.jpeg" alt="Steps of a machine learning model - offline" width="400" align="middle"/>
+<center><img src="figures/training-flow.jpeg" alt="Steps of a machine learning model - offline" width="400" align="middle"/></center>
 
 ##  
 
-<img src="figures/scoring-flow.jpeg" alt="Steps of a machine learning model - online" width="400" align="middle"/>
+<center><img src="figures/scoring-flow.jpeg" alt="Steps of a machine learning model - online" width="400" align="middle"/></center>
 
 # Thank you! 
 
-##  Thank you! 
+##
+
+####  Thank you!
 
  </br>
 	
